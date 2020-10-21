@@ -1,4 +1,4 @@
-package com.acm.bookstore.controller.dto;
+package com.acm.bookstore.dto;
 
 import lombok.Builder;
 import lombok.Data;

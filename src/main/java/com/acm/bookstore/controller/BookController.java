@@ -1,14 +1,15 @@
 package com.acm.bookstore.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.acm.bookstore.controller.dto.MessageResponseDTO;
-import com.acm.bookstore.entity.Book;
-import com.acm.bookstore.repository.BookRepository;
+import com.acm.bookstore.dto.BookDTO;
+import com.acm.bookstore.dto.MessageResponseDTO;
 import com.acm.bookstore.service.BookService;
 
 @RestController
@@ -23,7 +24,7 @@ public class BookController {
 	}
 	
 	@PostMapping
-	public MessageResponseDTO create(@RequestBody Book book) {
-		return bookService.create(book);
+	public MessageResponseDTO create(@RequestBody @Valid BookDTO bookDTO) {
+		return bookService.create(bookDTO);
 	}
 }
