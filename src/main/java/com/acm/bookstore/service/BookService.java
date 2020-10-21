@@ -1,5 +1,7 @@
 package com.acm.bookstore.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,11 @@ public class BookService {
 		Book bookToSave = bookMapper.toModel(bookDTO);		
 		Book savedBook = bookRepository.save(bookToSave);
 		return MessageResponseDTO.builder().message("Book created with id: " + savedBook.getId()).build();
+	}
+
+	public BookDTO findById(Long id) {
+		Optional<Book> opBook =  bookRepository.findById(id);
+		return bookMapper.toDTO(opBook.get());		
 	}
 	
 }
