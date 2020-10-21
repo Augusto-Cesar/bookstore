@@ -1,13 +1,12 @@
 package com.acm.bookstore.service;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.acm.bookstore.dto.BookDTO;
 import com.acm.bookstore.dto.MessageResponseDTO;
 import com.acm.bookstore.entity.Book;
+import com.acm.bookstore.exception.BookNotFoundException;
 import com.acm.bookstore.mapper.BookMapper;
 import com.acm.bookstore.repository.BookRepository;
 
@@ -28,9 +27,10 @@ public class BookService {
 		return MessageResponseDTO.builder().message("Book created with id: " + savedBook.getId()).build();
 	}
 
-	public BookDTO findById(Long id) {
-		Optional<Book> opBook =  bookRepository.findById(id);
-		return bookMapper.toDTO(opBook.get());		
+	public BookDTO findById(Long id) throws BookNotFoundException {
+		Book book = bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(id));
+		
+		return bookMapper.toDTO(book);		
 	}
 	
 }
