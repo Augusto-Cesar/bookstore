@@ -41,7 +41,12 @@ public class Book {
 	@Column(name = "publisher_name", nullable = false, unique = true)
 	private String publisherName;
 	
-	@ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-	@JoinColumn(name = "autor_id")
+	@ManyToOne(cascade = {CascadeType.MERGE})
 	private Autor autor;
+	
+	@ManyToOne(cascade = {CascadeType.MERGE})
+	private Publisher publisher;
+	
+	@ManyToOne(cascade = {CascadeType.MERGE})
+	private User user;
 }

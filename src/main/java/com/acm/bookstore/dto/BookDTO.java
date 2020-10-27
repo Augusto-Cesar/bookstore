@@ -7,6 +7,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.acm.bookstore.entity.Autor;
+import com.acm.bookstore.entity.Publisher;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,11 +38,9 @@ public class BookDTO {
 			message = "Formato inválido para ISBN")
 	private String isbn;
 	
-	@NotBlank
-	@Size(max = 200)
-	private String publisherName;
-	
 	@Valid
 	@NotNull
 	private Autor autor;
+	
+	private Publisher publisher;
 }
