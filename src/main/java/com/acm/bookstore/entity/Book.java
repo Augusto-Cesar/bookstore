@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.acm.bookstore.entity.auditory.Auditable;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,19 +22,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Book {
+public class Book extends Auditable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false, length = 100)
 	private String name;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "integer default 0")
 	private Integer pages;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "integer default 0")
 	private Integer chapters;
 	
 	@Column(nullable = false)
