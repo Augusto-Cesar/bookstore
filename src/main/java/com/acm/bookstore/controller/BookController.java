@@ -26,6 +26,11 @@ public class BookController {
 		this.bookService = bookService;
 	}
 	
+	@GetMapping("/")
+	public String hello() {
+		return "Hello!";
+	}
+	
 	@PostMapping
 	public MessageResponseDTO create(@RequestBody @Valid BookDTO bookDTO) {
 		return bookService.create(bookDTO);
