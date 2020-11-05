@@ -18,7 +18,7 @@ public class AutorDTO {
 	
 	private Long id;
 	
-	@NotNull
+	@NotNull(message = "Favor informar o nome do autor!")
 	@NotEmpty
 	@Size(max = 255)
 	private String name;
