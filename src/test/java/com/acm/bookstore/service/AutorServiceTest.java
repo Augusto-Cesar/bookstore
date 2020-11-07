@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import com.acm.bookstore.builder.AutorDTOBuilder;
 import com.acm.bookstore.dto.AutorDTO;
 import com.acm.bookstore.entity.Autor;
+import com.acm.bookstore.exception.AuthorNotFoundException;
 import com.acm.bookstore.exception.AutorAlreadyExistsException;
 import com.acm.bookstore.mapper.AuthorMapper;
 import com.acm.bookstore.repository.AutorRepository;
@@ -67,5 +68,26 @@ public class AutorServiceTest {
 			.thenReturn(Optional.of(expectedCreatedAuthor));
 		
 		assertThrows(AutorAlreadyExistsException.class, () -> autorService.create(expectedAutorTocreatedDTO));
+	}
+	
+	@Test
+	void quandoIdEncontradoAutorERetornado() {
+		AutorDTO expectedAutorDTO = autorDTOBuilder.buildAutorDTO();
+		Autor expectedAuthor = authorMapper.toModel(expectedAutorDTO);
+		
+		when(autorRepository.findById(expectedAutorDTO.getId())).thenReturn(Optional.of(expectedAuthor));
+		
+		AutorDTO autorDTO = autorService.findById(expectedAutorDTO.getId());
+		
+		assertThat(autorDTO, is(equalTo(expectedAutorDTO)));
+	}
+	
+	@Test
+	void quandoIdNaoEncontradoUmaExcecaoLancada() {
+		AutorDTO expectedAutorDTO = autorDTOBuilder.buildAutorDTO();
+		
+		when(autorRepository.findById(expectedAutorDTO.getId())).thenReturn(Optional.empty());
+		
+		assertThrows(AuthorNotFoundException.class, () -> autorService.findById(expectedAutorDTO.getId()));
 	}
 }
