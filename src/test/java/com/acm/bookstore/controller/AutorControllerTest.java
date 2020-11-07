@@ -1,6 +1,7 @@
 package com.acm.bookstore.controller;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -15,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -73,5 +75,19 @@ public class AutorControllerTest {
 				.content(JsonConverter.asJsonString(expecetdCreatedAutorDTO)))
 				.andExpect(status().isBadRequest());
 	}
-
+	
+	@Test
+	void quandoIdEncontradoStatusOkRetornado() throws Exception {
+		AutorDTO expectedAutorDTO = autorDTOBuilder.buildAutorDTO();
+		
+		when(autorService.findById(expectedAutorDTO.getId()))
+			.thenReturn(expectedAutorDTO);
+		
+		mockMvc.perform(get(AUTHOR_API_URL_PATH + "/" + expectedAutorDTO.getId()).
+				contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id", Is.is(expectedAutorDTO.getId().intValue())))
+				.andExpect(jsonPath("$.name", Is.is(expectedAutorDTO.getName())))
+				.andExpect(jsonPath("$.age", Is.is(expectedAutorDTO.getAge())));
+	}
 }

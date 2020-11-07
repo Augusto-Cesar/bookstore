@@ -4,6 +4,8 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,5 +31,11 @@ public class AutorController {
 	public AutorDTO create(@RequestBody @Valid AutorDTO autorDTO) {
 		return autorService.create(autorDTO);
 	}
+
+	@GetMapping("/{id}")
+	public AutorDTO findById(@PathVariable Long id) {
+		return autorService.findById(id);
+	}
+	
 	
 }
