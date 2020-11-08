@@ -6,6 +6,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -89,5 +91,28 @@ public class AutorServiceTest {
 		when(autorRepository.findById(expectedAutorDTO.getId())).thenReturn(Optional.empty());
 		
 		assertThrows(AuthorNotFoundException.class, () -> autorService.findById(expectedAutorDTO.getId()));
+	}
+	
+	@Test
+	void quandoListaAutorChamadaEntaoRetornaLista() {
+		AutorDTO expectedAutorDTO = autorDTOBuilder.buildAutorDTO();
+		Autor expectedAuthor = authorMapper.toModel(expectedAutorDTO);
+		
+		when(autorRepository.findAll()).thenReturn(Collections.singletonList(expectedAuthor));
+		
+		List<AutorDTO> autorDTOList = autorService.findAll();
+		
+		assertThat(autorDTOList.size(), is(1));
+		assertThat(autorDTOList.get(0), is(equalTo(expectedAutorDTO)));
+		
+	}
+	
+	@Test
+	void quandoListaAutorChamadaRetornaListaVazia() {
+		when(autorRepository.findAll()).thenReturn(Collections.EMPTY_LIST);
+		
+		List<AutorDTO> autorDTOList = autorService.findAll();
+		
+		assertThat(autorDTOList.size(), is(0));
 	}
 }

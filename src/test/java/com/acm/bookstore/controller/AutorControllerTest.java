@@ -6,6 +6,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.Collections;
+
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 
@@ -89,5 +90,20 @@ public class AutorControllerTest {
 				.andExpect(jsonPath("$.id", Is.is(expectedAutorDTO.getId().intValue())))
 				.andExpect(jsonPath("$.name", Is.is(expectedAutorDTO.getName())))
 				.andExpect(jsonPath("$.age", Is.is(expectedAutorDTO.getAge())));
+	}
+	
+	@Test
+	void quandoListaChamadaStatusOkRetornado() throws Exception {
+		AutorDTO expectedAutorDTO = autorDTOBuilder.buildAutorDTO();
+		
+		when(autorService.findAll())
+			.thenReturn(Collections.singletonList(expectedAutorDTO));
+		
+		mockMvc.perform(get(AUTHOR_API_URL_PATH).
+				contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$[0].id", Is.is(expectedAutorDTO.getId().intValue())))
+				.andExpect(jsonPath("$[0].name", Is.is(expectedAutorDTO.getName())))
+				.andExpect(jsonPath("$[0].age", Is.is(expectedAutorDTO.getAge())));
 	}
 }

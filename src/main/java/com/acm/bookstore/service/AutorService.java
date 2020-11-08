@@ -1,5 +1,8 @@
 package com.acm.bookstore.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +42,10 @@ public class AutorService {
 	private void verifyIfExists(String autorName) {
 		autorRepository.findByName(autorName)
 			.ifPresent(autor -> { throw new AutorAlreadyExistsException(autorName); });
+	}
+	
+	public List<AutorDTO> findAll() {
+		return autorRepository.findAll().stream().map(authorMapper::toDTO).collect(Collectors.toList());
 	}
 	
 }

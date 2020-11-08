@@ -1,5 +1,7 @@
 package com.acm.bookstore.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,13 @@ public class AutorController {
 	public AutorDTO findById(@PathVariable Long id) {
 		return autorService.findById(id);
 	}
+	
+	@GetMapping
+	public List<AutorDTO> findAll() {
+		return autorService.findAll();
+	}
+	
+	
 	
 	
 }
