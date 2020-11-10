@@ -1,6 +1,8 @@
 package com.acm.bookstore.controller;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -105,5 +107,19 @@ public class AutorControllerTest {
 				.andExpect(jsonPath("$[0].id", Is.is(expectedAutorDTO.getId().intValue())))
 				.andExpect(jsonPath("$[0].name", Is.is(expectedAutorDTO.getName())))
 				.andExpect(jsonPath("$[0].age", Is.is(expectedAutorDTO.getAge())));
+	}
+	
+	@Test
+	void quandoDeletarIdValidoNoContentRetornado() throws Exception {
+		AutorDTO expectedAutorDTO = autorDTOBuilder.buildAutorDTO();
+		
+		var expectedId = expectedAutorDTO.getId();
+		doNothing().when(autorService).deleteById(expectedId);
+		
+		mockMvc.perform(delete(AUTHOR_API_URL_PATH + "/" + expectedId)
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isNoContent());
+		
+		 
 	}
 }

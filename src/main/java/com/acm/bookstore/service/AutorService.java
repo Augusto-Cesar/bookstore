@@ -34,9 +34,7 @@ public class AutorService {
 	}
 	
 	public AutorDTO findById(Long id) {
-		Autor autor =  autorRepository.findById(id)
-		.orElseThrow(() -> new AuthorNotFoundException(id));
-		return authorMapper.toDTO(autor);
+		return authorMapper.toDTO(verificarERetornarAutor(id));
 	}
 
 	private void verifyIfExists(String autorName) {
@@ -46,6 +44,17 @@ public class AutorService {
 	
 	public List<AutorDTO> findAll() {
 		return autorRepository.findAll().stream().map(authorMapper::toDTO).collect(Collectors.toList());
+	}
+	
+	public void deleteById(Long id) {
+		verificarERetornarAutor(id);
+		autorRepository.deleteById(id);
+	}
+
+	private Autor verificarERetornarAutor(Long id) {
+		Autor autor = autorRepository.findById(id)
+				.orElseThrow(() -> new AuthorNotFoundException(id));
+		return autor;
 	}
 	
 }
